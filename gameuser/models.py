@@ -26,6 +26,7 @@ class Game(models.Model):
         return self.name
 
 class Gameuser(models.Model):
+    name = models.CharField(max_length=50,default="")
     username = models.CharField(max_length=200, default="")
     password = models.CharField(max_length=200, default="")
     email = models.CharField(max_length=200, default="")

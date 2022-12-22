@@ -73,12 +73,13 @@ class CreateUser(graphene.Mutation):
     user = graphene.Field(GameuserType)
 
     class Arguments:
+        name = graphene.String()
         username = graphene.String()
         password = graphene.String()
         email = graphene.String()
 
 
-    def mutate(self, info, username, password, email):
+    def mutate(self, info,name, username, password, email):
         if (User.objects.filter(username=username).exists()):
             user = User.objects.get(username=username)
 
@@ -86,7 +87,7 @@ class CreateUser(graphene.Mutation):
             user = User.objects.create_user(username=username, email=email, password=password)
             user.save()
 
-        GU = Gameuser(username=username, password=password, email=email)
+        GU = Gameuser(name=name, username=username, password=password, email=email)
         GU.save()
 
         return CreateUser(user=GU)
