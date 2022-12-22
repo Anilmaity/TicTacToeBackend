@@ -21,6 +21,8 @@ class Game(models.Model):
     current_player = models.IntegerField(default=-1)
     game_over = models.BooleanField(default=False)
     gameid = models.CharField(max_length=50,default="")
+    player1_name = models.CharField(max_length=200,default="")
+    player2_name = models.CharField(max_length=200,default="")
 
     def __str__(self):
         return self.name

@@ -121,6 +121,8 @@ class CreateGame(graphene.Mutation):
                 player2_side="O",
                 started_by=player1_id,
                 gameid=str(player1_id) + str(P2.id),
+                player1_name=P1.name,
+                player2_name=P2.name,
 
             )
 
