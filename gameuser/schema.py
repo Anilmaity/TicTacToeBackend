@@ -159,15 +159,47 @@ class UpdateGame(graphene.Mutation):
             game.current_player = N_P.id
             game.game_state = str(N_P.username) + " turn"
             game.save()
-            return UpdateGame(game=game,message="Move made")
+
+            res = False
+            if (ttt[0] == ttt[1] == ttt[2] and ttt[0] != "-"):
+                res = True
+            elif (ttt[3] == ttt[4] == ttt[5] and ttt[3] != "-"):
+                res = True
+            elif (ttt[6] == ttt[7] == ttt[8] and ttt[6] != "-"):
+                res = True
+            elif (ttt[0] == ttt[3] == ttt[6] and ttt[0] != "-"):
+                res = True
+            elif (ttt[1] == ttt[4] == ttt[7] and ttt[1] != "-"):
+                res = True
+            elif (ttt[2] == ttt[5] == ttt[8] and ttt[2] != "-"):
+                res = True
+            elif (ttt[0] == ttt[4] == ttt[8] and ttt[0] != "-"):
+                res = True
+            elif (ttt[2] == ttt[4] == ttt[6] and ttt[2] != "-"):
+                res = True
+            else:
+                return False
+
+            if(res):
+                game.game_over = True
+                game.game_state = str(P.username) + " won"
+                game.save()
+                return UpdateGame(game=game,message="Game Over")
+            else:
+                #check if draw
+                if "-" not in ttt:
+                    game.game_over = True
+                    game.game_state = "Draw"
+                    game.save()
+                    return UpdateGame(game=game,message="Game Over")
+                else:
+                    return UpdateGame(game=game,message="Game updated")
+
 
 
         else:
             message = "Position already taken"
             return UpdateGame(game=game,message=message)
-
-    # def checkwinconditions(self,ttt):
-    #
 
 
 
