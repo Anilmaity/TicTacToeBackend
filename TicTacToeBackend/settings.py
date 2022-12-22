@@ -49,15 +49,16 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "https://tictactoe-z3ih4o4xwq-el.a.run.app",
     "https://tictactoeapp-z3ih4o4xwq-el.a.run.app",
+    "*"
 
 ]
 
 CSRF_TRUSTED_ORIGINS = [
-    "https://jegnus.co.uk",
-    "https://jegnus.com",
-    "https://store.jegnus.com",
-    "https://admin.jegnus.com",
-    "https://restaurant.jegnus.com",
+    "http://localhost:3000",
+    "https://tictactoeapp-z3ih4o4xwq-el.a.run.app",
+    "https://tictactoe-z3ih4o4xwq-el.a.run.app",
+
+    "*"
 
 ]
 MIDDLEWARE = [
