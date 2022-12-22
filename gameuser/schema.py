@@ -68,6 +68,9 @@ class Query(UserQuery, MeQuery, graphene.ObjectType):
     def resolve_Games(self, info, **kwargs):
         return Game.objects.all()
 
+    def resolve_GetGamebyId(self, info,id, **kwargs):
+        return Game.objects.get(id=id)
+
 
 class CreateUser(graphene.Mutation):
     user = graphene.Field(GameuserType)
@@ -105,6 +108,8 @@ class CreateGame(graphene.Mutation):
     def mutate(self, info, email, player1_id):
         P1 = Gameuser.objects.get(id=player1_id)
         P2 = Gameuser.objects.get(email=email)
+        if (P1 == P2):
+            return CreateGame(message="You cannot play against yourself")
 
         G = Game.objects.filter(player1_id=P1.id, player2_id=P2.id ,game_over=False)
 
@@ -123,6 +128,7 @@ class CreateGame(graphene.Mutation):
                 gameid=str(player1_id) + str(P2.id),
                 player1_name=P1.name,
                 player2_name=P2.name,
+                current_player=P1.id,
 
             )
 
@@ -160,7 +166,7 @@ class UpdateGame(graphene.Mutation):
             ttt = ttt[:position] + side + ttt[position + 1:]
             game.tictactoe = ttt
             game.current_player = N_P.id
-            game.game_state = str(N_P.username) + " turn"
+            game.game_state = str(N_P.username) + " move"
             game.save()
 
             res = False
@@ -181,18 +187,18 @@ class UpdateGame(graphene.Mutation):
             elif (ttt[2] == ttt[4] == ttt[6] and ttt[2] != "-"):
                 res = True
             else:
-                return False
+                res = False
 
-            if(res):
+            if res:
                 game.game_over = True
-                game.game_state = str(P.username) + " won"
+                game.game_state = str(P.name) + " won"
                 game.save()
                 return UpdateGame(game=game,message="Game Over")
             else:
                 #check if draw
                 if "-" not in ttt:
                     game.game_over = True
-                    game.game_state = "Draw"
+                    game.game_state = str(P.name) + " Draw"
                     game.save()
                     return UpdateGame(game=game,message="Game Over")
                 else:

@@ -29,7 +29,7 @@ class Game(models.Model):
 
 class Gameuser(models.Model):
     name = models.CharField(max_length=50,default="")
-    username = models.CharField(max_length=200, default="")
+    username = models.CharField(max_length=200, default="",unique=True)
     password = models.CharField(max_length=200, default="")
     email = models.CharField(max_length=200, default="")
     wins = models.IntegerField(default=0)
